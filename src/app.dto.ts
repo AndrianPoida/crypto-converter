@@ -9,6 +9,7 @@ import {
 
 export class GetCoinsDataParams {
   @ApiProperty({
+    required: false,
     type: [String],
     description: 'List of crypto currencies',
     example: 'BTC,BCH,BSV',
@@ -17,8 +18,9 @@ export class GetCoinsDataParams {
   @IsString({ each: true })
   @ArrayMinSize(1)
   @Type(() => String)
+  @IsOptional()
   @Transform(({ value }) => value.split(',').map((x: string) => x.trim()))
-  list: string[];
+  list?: string[];
 
   @ApiProperty({
     required: false,

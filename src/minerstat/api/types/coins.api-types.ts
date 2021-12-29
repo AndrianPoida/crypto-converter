@@ -1,10 +1,10 @@
 export class MinerstatListCoinsDataParams {
-  list: string[];
+  list?: string[];
   algo?: string[];
 }
 
 export class MinerstatListCoinsDataParamsRaw {
-  list: string;
+  list?: string;
   algo?: string;
 }
 

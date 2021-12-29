@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { convertToQuery } from 'src/utils';
 import { MinerstatApiClient } from './api-client.abstract';
 import { MinerstatListCoinsDataParams, MinerstatListCoinsDataParamsRaw, MinerstatListCoinsDataResponse } from './types/coins.api-types';
 
 @Injectable()
 export class MinerstatCoinsApi extends MinerstatApiClient {
   constructor() {
-    super('/');
+    super('/coins');
   }
 
   public async getData(dto: MinerstatListCoinsDataParams): Promise<MinerstatListCoinsDataResponse[]> {
     const queryData: MinerstatListCoinsDataParamsRaw = {
-      list: dto.list.join(','),
+      list: dto.list?.join(','),
+      algo: dto.algo?.join(','),
     };
-    if (dto.algo) queryData.algo = dto.algo.join(',');
-    const query = convertToQuery(queryData);
-    return this.client.get<MinerstatListCoinsDataResponse[]>(`/coins?${query}`)
-      .then((res) => res.data);
+    return this.client.get<MinerstatListCoinsDataResponse[]>('', {
+      params: queryData
+    }).then((res) => res.data);
   }
 }
