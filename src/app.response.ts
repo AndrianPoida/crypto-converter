@@ -1,34 +1,37 @@
-import { Expose, plainToClass } from 'class-transformer';
 import { ApiProperty } from '@nestjs/swagger';
-import { MinerstatListCoinsDataResponse } from './minerstat/api/types/coins.api-types';
+import { getCoinsDataExampleResponse } from './faker';
+import * as moment from 'moment';
+
+class GetCoinsDataInputParams {
+  @ApiProperty({ example: getCoinsDataExampleResponse.query.from })
+  from: string;
+
+  @ApiProperty({ example: getCoinsDataExampleResponse.query.amount })
+  amount: number;
+}
 
 export class GetCoinsDataResponse {
-  @Expose()
-  @ApiProperty()
-  coin: string;
+  @ApiProperty({ example: getCoinsDataExampleResponse.success })
+  success: boolean;
 
-  @Expose()
   @ApiProperty()
-  algorithm: string;
+  query: GetCoinsDataInputParams;
 
-  @Expose()
-  @ApiProperty()
-  price: number;
+  @ApiProperty({ example: getCoinsDataExampleResponse.date })
+  date: string;
+
+  @ApiProperty({ example: getCoinsDataExampleResponse.result })
+  result: number;
 
   static from(
-    coinData: MinerstatListCoinsDataResponse,
+    query: GetCoinsDataInputParams,
+    result: number,
   ): GetCoinsDataResponse {
-    return plainToClass(GetCoinsDataResponse, coinData, {
-      enableImplicitConversion: true,
-      excludeExtraneousValues: true,
-    });
-  }
-
-  static map(
-    payload: MinerstatListCoinsDataResponse[],
-  ): GetCoinsDataResponse[] {
-    return payload.map(item =>
-      GetCoinsDataResponse.from(item),
-    );
+    return {
+      success: true,
+      query,
+      result,
+      date: moment().format('YYYY-MM-DD'),
+    }
   }
 }

@@ -9,8 +9,12 @@ export class AppService {
     private readonly minerstatApi: MinerstatApi,
   ) {}
 
-  async getCoinsData(payload: GetCoinsDataParams): Promise<GetCoinsDataResponse[]> {
-    const coinsData = await this.minerstatApi.coins.getData(payload);
-    return GetCoinsDataResponse.map(coinsData);
+  async getCoinsData(payload: GetCoinsDataParams): Promise<GetCoinsDataResponse> {
+    const coinsData = await this.minerstatApi.coins.getData({
+      list: [payload.from],
+    });
+    const result = (coinsData[0]?.price ?? 0) * payload.amount;
+    const parsedResult = parseFloat(result.toFixed(2));
+    return GetCoinsDataResponse.from(payload, parsedResult);
   }
 }

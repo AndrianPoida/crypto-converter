@@ -1,30 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
 import {
   IsString,
-  IsOptional,
+  IsNumberString,
 } from 'class-validator';
 
 export class GetCoinsDataParams {
   @ApiProperty({
-    required: false,
-    type: [String],
-    description: 'List of crypto currencies',
-    example: 'BTC,BCH,BSV',
+    description: 'coin symbol',
   })
-  @IsString({ each: true })
-  @IsOptional()
-  @Transform(({ value }) => value.split(',').map((x: string) => x.trim()))
-  list?: string[];
+  @IsString()
+  from: string;
 
   @ApiProperty({
-    required: false,
-    type: [String],
-    description: 'List of algrorithms',
-    example: 'SHA-256,Scrypt',
+    description: 'amount in base currency',
   })
-  @IsString({ each: true })
-  @IsOptional()
-  @Transform(({ value }) => value.split(',').map((x: string) => x.trim()))
-  algo?: string[];
+  @IsNumberString()
+  amount: number;
 }

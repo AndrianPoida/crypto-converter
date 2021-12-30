@@ -12,13 +12,11 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
   }));
-  app.setGlobalPrefix('/api');
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Crypto Converter')
-    .setDescription('API for converting crypto currencies')
+    .setTitle('Coin Converter')
+    .setDescription('API Specification for a coin ammount to USD')
     .setVersion('1.0')
-    .addTag('app')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);

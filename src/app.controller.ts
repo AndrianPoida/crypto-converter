@@ -1,21 +1,27 @@
 import { Controller, Get, Query } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { GetCoinsDataParams } from './app.dto';
 import { GetCoinsDataResponse } from './app.response';
 import { AppService } from './app.service';
 
-@ApiTags('App')
-@Controller('/app')
+@ApiTags('converter')
+@Controller('/')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get('/coins-data')
+  @Get('/convert')
+  @ApiOperation({
+    summary: 'Convert Cryto Currency to USD',
+    operationId: 'convert-currency',
+    description: 'Convert amount to USD',
+  })
   @ApiOkResponse({
     type: [GetCoinsDataResponse],
+    description: 'OK',
   })
   async getCoinsData(
     @Query() params: GetCoinsDataParams
-  ): Promise<GetCoinsDataResponse[]> {
+  ): Promise<GetCoinsDataResponse> {
     return this.appService.getCoinsData(params);
   }
 }
